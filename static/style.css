@@ -1,0 +1,245 @@
+/* ===========================
+   Global Theme Colors
+   =========================== */
+:root {
+  --navy-dark: #1e3a8a;
+  --navy-mid: #213a56;
+  --beige: #cdaa80;
+  --coffee: #5ebc2b;
+  --white: #ffffff;
+
+  --radius-pill: 40px;
+  --radius-card: 18px;
+  --shadow-card: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* ===========================
+   Base
+   =========================== */
+body {
+  margin: 0;
+  padding: 0;
+  background: #333333;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #ffffff;
+}
+
+.wrap {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* ===========================
+   Card Container
+   =========================== */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 30px;
+  color: #222;
+}
+
+/* ===========================
+   Headings
+   =========================== */
+h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: #00d4ff;
+  font-weight: 700;
+}
+
+/* ===========================
+   Input + Select Styling
+   =========================== */
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--navy-mid);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  margin-top: 8px;
+  outline: none;
+  background: #f7f7f7;
+}
+
+input:focus, select:focus {
+  border-color: var(--beige);
+  box-shadow: 0 0 0 3px rgba(205,170,128,0.3);
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.25s ease;
+  color: var(--white);
+  min-width: auto;
+  white-space: nowrap;
+}
+
+.btn-green  { background: var(--navy-mid); }
+.btn-orange { background: var(--beige); color: #222; }
+.btn-red    { background: var(--coffee); }
+.btn-blue   { background: var(--navy-dark); }
+
+/* Hover Effects */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ===========================
+   Item Rows
+   =========================== */
+.item-row {
+  margin-bottom: 15px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fafafa;
+  box-sizing: border-box;
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.item-row:last-child {
+  margin-bottom: 0;
+}
+
+.item-field {
+  flex: 1;
+  min-width: 120px;
+}
+
+.product-field {
+  flex: 2;
+  min-width: 200px;
+}
+
+.quantity-field {
+  flex: 1;
+  min-width: 100px;
+}
+
+.price-field {
+  flex: 1;
+  min-width: 120px;
+}
+
+.remove-field {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 6px;
+}
+
+.item-row input {
+  margin-top: 6px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.item-row .product-input {
+  margin-bottom: 0;
+}
+
+/* Mobile responsiveness for item rows */
+@media (max-width: 768px) {
+  .item-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .item-field {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .product-field,
+  .quantity-field,
+  .price-field {
+    flex: none;
+  }
+}
+
+/* ===========================
+   Button Groups
+   =========================== */
+.btn-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Row Layout
+   =========================== */
+.row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.row .col {
+  flex: 1;
+}
+
+@media (max-width: 700px) {
+  .row { flex-direction: column; }
+}
+
+/* ===========================
+   Result + History Box
+   =========================== */
+.result {
+  background: #f3f3f3;
+  border-radius: var(--radius-card);
+  padding: 20px;
+  margin-top: 24px;
+  border-left: 6px solid var(--navy-mid);
+}
+
+#historyPanel {
+  background: #faf7f3;
+  padding: 15px;
+  border-radius: var(--radius-card);
+  margin-top: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  border-left: 6px solid var(--beige);
+}
+
+/* ===========================
+   Voice Transcript
+   =========================== */
+#transcript {
+  margin-top: 12px;
+  color: var(--coffee);
+  font-style: italic;
+}
+
+/* ===========================
+   Divider line
+   =========================== */
+hr {
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  margin: 25px 0;
+}

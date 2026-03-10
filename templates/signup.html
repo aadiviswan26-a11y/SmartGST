@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up - Smart GST Calculator</title>
+  <!-- Google Font Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body style="font-family: 'Poppins', sans-serif; background: #2c2c2c;">
+
+  <div class="wrap">
+    <!-- Card -->
+    <div class="card" style="max-width: 450px; margin: 50px auto; padding: 35px 40px; border-radius: 15px; background: #fff; box-shadow: 0 8px 25px rgba(0,0,0,0.2);">
+
+      <!-- Heading -->
+      <h1 style="
+          text-align: center;
+          color: #00d4ff;
+          font-size: 40px;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 15px;
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      ">
+        Sign Up
+      </h1>
+
+      <!-- Subtitle -->
+      <div class="muted" style="text-align: center; margin-bottom: 25px; font-size: 14px; color: #555;">
+        Create your Smart GST Calculator account
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;">
+            {% for message in messages %}
+              {{ message }}<br>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <!-- Sign Up Form -->
+      <form method="POST" action="/signup" style="display: flex; flex-direction: column; gap: 15px;">
+
+        <label for="name" style="font-size: 15px; font-weight: 500; color: #333;">Full Name</label>
+        <input id="name" name="name" type="text" placeholder="Your full name" required
+               style="padding: 10px; font-size: 14px; border-radius: 20px; width: 100%; box-sizing: border-box; border: 1px solid #ccc;" />
+
+        <label for="email" style="font-size: 15px; font-weight: 500; color: #333;">Email</label>
+        <input id="email" name="email" type="email" placeholder="your@email.com" required
+               style="padding: 10px; font-size: 14px; border-radius: 20px; width: 100%; box-sizing: border-box; border: 1px solid #ccc;" />
+
+        <label for="phone" style="font-size: 15px; font-weight: 500; color: #333;">Phone Number</label>
+        <input id="phone" name="phone" type="tel" placeholder="Your phone number" required
+               style="padding: 10px; font-size: 14px; border-radius: 20px; width: 100%; box-sizing: border-box; border: 1px solid #ccc;" />
+
+        <label for="password" style="font-size: 15px; font-weight: 500; color: #333;">Password</label>
+        <input id="password" name="password" type="password" placeholder="Create a password" required minlength="6"
+               style="padding: 10px; font-size: 14px; border-radius: 20px; width: 100%; box-sizing: border-box; border: 1px solid #ccc;" />
+
+        <label for="confirm_password" style="font-size: 15px; font-weight: 500; color: #333;">Confirm Password</label>
+        <input id="confirm_password" name="confirm_password" type="password" placeholder="Confirm your password" required
+               style="padding: 10px; font-size: 14px; border-radius: 20px; width: 100%; box-sizing: border-box; border: 1px solid #ccc;" />
+
+        <!-- Buttons -->
+        <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: space-between; flex-wrap: wrap;">
+          <button type="submit" class="btn btn-green"
+                  style="flex: 1; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 20px; background: #00d4ff; color: #fff; border: none; cursor: pointer;">
+            Create Account
+          </button>
+          <a href="/login" class="btn btn-blue"
+             style="flex: 1; padding: 12px; text-align: center; text-decoration: none; font-weight: 600; border-radius: 20px; background: #007bff; color: #fff; display: inline-block;">
+            Login
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</body>
+</html>
