@@ -94,7 +94,6 @@
 
       <div style="margin-top: 15px;">
         <button type="button" id="addItemBtn" class="btn btn-blue" style="padding: 8px 16px;">+ Add Another Item</button>
-        <button type="button" id="scanBillBtn" class="btn btn-green" style="padding: 8px 16px; margin-left: 10px;">📷 Scan Bill</button>
       </div>
 
       <div class="row" style="margin-top:12px">
@@ -166,7 +165,6 @@ const itemsContainer = document.getElementById('itemsContainer');
 const addItemBtn = document.getElementById('addItemBtn');
 
 const calcBtn = document.getElementById('calcBtn');
-const voiceBtn = document.getElementById('voiceBtn');
 const clearBtn = document.getElementById('clearBtn');
 const historyBtn = document.getElementById('historyBtn');
 const invoiceBtn = document.getElementById('invoiceBtn');
@@ -480,8 +478,8 @@ document.addEventListener('click', function(event) {
 });
 </script>
 
-<!-- Scanner Modal -->
-<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+<!-- Remove the entire scanner modal div below -->
+<!-- <div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
   <div style="background: white; padding: 20px; border-radius: 10px; max-width: 600px; width: 90%; text-align: center;">
     <h3>Scan Bill</h3>
     <div style="margin-bottom: 10px;">
@@ -497,12 +495,15 @@ document.addEventListener('click', function(event) {
     </div>
     <div id="scanResult" style="margin-top: 10px; font-size: 12px;"></div>
   </div>
-</div>
+</div> -->
 
-<script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+<!-- Remove the external script tags for scanner libraries below -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script> -->
+
+<!-- Remove the entire scanner script block below -->
+<!-- <script>
 document.getElementById('scanBillBtn').addEventListener('click', () => {
   document.getElementById('scannerModal').style.display = 'flex';
 });
@@ -628,6 +629,8 @@ function scanImage(canvas) {
     document.getElementById('scanResult').textContent += 'OCR Result: ' + text;
   });
 }
-</script>
+</script> -->
+
+<!-- ...existing code... -->
 </body>
 </html>
