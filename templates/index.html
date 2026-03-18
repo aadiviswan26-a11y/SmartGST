@@ -19,7 +19,90 @@
       --shadow:0 10px 30px rgba(15,23,42,0.06);
     }
 
-    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:#333333;color:#ffffff;}
+    html,body{
+  height:100%;
+  margin:0;
+  font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  color:#ffffff;
+  background:#0f1e3f;
+  overflow-x:hidden;
+}
+
+/* Background triangle layer */
+body::before{
+  content:"";
+  position:fixed;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  z-index:-1;
+
+  background:
+  repeating-linear-gradient(
+    45deg,
+    rgba(90,90,90,0.35) 0px,
+    rgba(90,90,90,0.35) 50px,
+    transparent 50px,
+    transparent 100px
+  ),
+  repeating-linear-gradient(
+    -45deg,
+    rgba(40,40,40,0.35) 0px,
+    rgba(40,40,40,0.35) 25px,
+    transparent 25px,
+    transparent 75px
+  );
+
+  animation: triangleWave 18s linear infinite;
+}
+
+/* Second layer for depth */
+body::after{
+  content:"";
+  position:fixed;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  z-index:-2;
+
+  background:
+  repeating-linear-gradient(
+    45deg,
+    rgba(120,120,120,0.15) 0px,
+    rgba(120,120,120,0.15) 80px,
+    transparent 80px,
+    transparent 160px
+  );
+
+  animation: triangleWave2 25s linear infinite;
+}
+
+@keyframes triangleWave{
+  0%{
+    transform: rotate(45deg) translate(0,0);
+  }
+  50%{
+    transform: rotate(45deg) translate(-150px,120px);
+  }
+  100%{
+    transform: rotate(45deg) translate(0,0);
+  }
+}
+
+@keyframes triangleWave2{
+  0%{
+    transform: rotate(45deg) translate(0,0);
+  }
+  50%{
+    transform: rotate(45deg) translate(120px,-150px);
+  }
+  100%{
+    transform: rotate(45deg) translate(0,0);
+  }
+}
+  
     .wrap{max-width:980px;margin:28px auto;padding:20px;}
     .card{background:var(--white);border-radius:var(--radius-card);box-shadow:var(--shadow);padding:22px;color:#111;}
     .flex-between{display:flex;justify-content:space-between;align-items:center}
