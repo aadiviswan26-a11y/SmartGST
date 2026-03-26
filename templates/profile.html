@@ -1,78 +1,267 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Profile - Smart GST Calculator</title>
-  <link rel="stylesheet" href="/static/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>High-Tech Profile Dashboard - Smart GST Calculator</title>
+<style>
+body {
+  margin:0; padding:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg,#f0f4f9,#d9e2ec);
+  color:#333;
+  overflow-x:hidden;
+}
+
+/* Sidebar toggle button: always visible, fully independent */
+.sidebar-toggle {
+  position:fixed;
+  top:25px;
+  left:25px;
+  font-size:32px;
+  cursor:pointer;
+  color:#00d4ff;
+  z-index:1100;
+  background: rgba(255,255,255,0.9);
+  padding:6px 10px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transition:0.3s;
+}
+.sidebar-toggle:hover { transform:scale(1.1); }
+
+/* Sidebar: completely hidden by default */
+.sidebar {
+  position:fixed;
+  top:0; left:0;
+  height:100vh;
+  width:0;
+  overflow:hidden; /* ensures no content peeks */
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(15px);
+  border-radius:0 24px 24px 0;
+  box-shadow:2px 0 30px rgba(0,0,0,0.1);
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  padding:0; /* remove padding when hidden */
+  transition: width 0.4s ease, padding 0.4s ease;
+  z-index:1000;
+}
+
+/* Sidebar open state */
+.sidebar.open {
+  width:250px;
+  padding:20px;
+}
+
+/* Sidebar content */
+.sidebar h2 { color:#00d4ff; text-align:center; font-size:20px; margin-bottom:20px; }
+.sidebar a {
+  display:flex; align-items:center; gap:12px;
+  text-decoration:none; color:#333; font-weight:500;
+  padding:12px 16px; border-radius:14px; transition:0.25s;
+}
+.sidebar a:hover { background: rgba(0,212,255,0.2); transform:translateX(4px); }
+.stats-card {
+  background: rgba(0,212,255,0.1);
+  padding:16px;
+  border-radius:18px;
+  text-align:center;
+  font-size:13px; font-weight:500;
+  box-shadow:0 6px 22px rgba(0,0,0,0.08);
+  transition:0.25s;
+}
+.stats-card:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,0.12); }
+
+/* Main content */
+.main { flex:1; display:flex; justify-content:center; align-items:flex-start; padding:35px; transition:margin-left 0.4s ease; }
+
+/* Profile card */
+.card {
+  background: rgba(255,255,255,0.95);
+  border-radius:26px;
+  padding:45px 40px;
+  width:100%;
+  max-width:600px;
+  box-shadow:0 18px 60px rgba(0,0,0,0.12);
+  backdrop-filter: blur(18px);
+  transition:0.3s;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 22px 72px rgba(0,0,0,0.18); }
+h1,h3 { margin:0 0 28px 0; color:#00d4ff; text-align:center; }
+
+/* Profile picture */
+.profile-pic-wrapper {
+  position:relative; display:flex; justify-content:center; align-items:center; margin-bottom:28px;
+  width:160px; height:160px;
+}
+.progress-circle {
+  position:absolute; top:0; left:0; width:160px; height:160px;
+  border-radius:50%;
+  background: conic-gradient(#00d4ff 0% 0%, #e0e0e0 0%);
+  transition: background 0.5s linear;
+}
+.profile-pic-wrapper img {
+  width:140px; height:140px; border-radius:50%;
+  object-fit:cover; border:5px solid transparent; position:absolute;
+  z-index:2;
+  transition:0.3s;
+}
+.profile-pic-wrapper img:hover { box-shadow:0 0 30px #00d4ff88; transform:scale(1.12); }
+.profile-pic-wrapper label {
+  position:absolute; bottom:0; right:0; cursor:pointer;
+  background:#00d4ff; color:white; padding:7px 9px;
+  border-radius:50%; font-size:15px;
+}
+
+/* Form fields */
+.profile-form {
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+}
+.profile-form input, .profile-form textarea {
+  width:80%;
+  padding:14px 16px;
+  border:1px solid #ccc;
+  border-radius:16px;
+  font-size:15px;
+  transition:0.3s;
+}
+.profile-form input:focus, .profile-form textarea:focus{
+  border-color:#00d4ff;
+  box-shadow:0 0 16px rgba(0,212,255,0.45);
+  outline:none;
+}
+
+/* Buttons */
+.btn-container{ display:flex; justify-content:center; flex-wrap:wrap; gap:16px; margin-top:25px; }
+.btn{
+  border:none; border-radius:16px;
+  font-weight:600; font-size:15px;
+  padding:12px 20px; min-width:130px;
+  cursor:pointer; transition:0.3s;
+}
+.btn:hover { transform:scale(1.07); opacity:0.92; }
+.btn-blue { background:#00d4ff;color:#fff; }
+.btn-green { background:#28a745;color:#fff; }
+.btn-red { background:#dc3545;color:#fff; }
+
+/* Account info */
+.account-info p{ font-size:14px; color:#555; text-align:center; margin:5px 0; }
+
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" style="max-width: 500px; margin: 50px auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="color: #00d4ff; margin: 0;">My Profile</h1>
-        <a href="/" class="btn btn-blue" style="padding: 8px 16px;">Back to Calculator</a>
-      </div>
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <div style="background: #e8f5e8; color: #2e7d32; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-            {% for message in messages %}
-              {{ message }}<br>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
+<!-- Sidebar toggle button -->
+<div class="sidebar-toggle" id="sidebarToggle">⋮</div>
 
-      <div style="text-align: center; margin-bottom: 30px;">
-        <div style="position: relative; display: inline-block;">
-          {% if current_user.profile_pic %}
-            <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" 
-                 alt="Profile Picture" 
-                 style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #00d4ff;">
-          {% else %}
-            <div style="width: 120px; height: 120px; border-radius: 50%; background: #e0e0e0; display: flex; align-items: center; justify-content: center; border: 3px solid #00d4ff;">
-              <span style="font-size: 48px; color: #666;">👤</span>
-            </div>
-          {% endif %}
-          <form method="POST" action="/upload_profile_pic" enctype="multipart/form-data" style="position: absolute; bottom: 0; right: 0;">
-            <label for="profile_pic" style="cursor: pointer; background: #00d4ff; color: white; padding: 6px 8px; border-radius: 50%; display: inline-block; font-size: 14px;">📷</label>
-            <input id="profile_pic" name="profile_pic" type="file" accept="image/*" style="display: none;" onchange="this.form.submit()">
-          </form>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <h2>Dashboard</h2>
+  <a href="/"><span>🧮</span> Calculator</a>
+  <a href="/logout" style="color:#dc3545;"><span>🚪</span> Logout</a>
+  <div class="stats-card">Calculations: {{ current_user.total_calculations or 0 }}</div>
+  <div class="stats-card">Last Login: {{ current_user.last_login or 'N/A' }}</div>
+  <div class="stats-card">Profile Completion: {{ profile_completion }}%</div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+  <div class="card">
+    <h1>My Profile</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="background:#e8f5e8;color:#2e7d32;padding:14px;border-radius:12px;margin-bottom:22px;text-align:center;">
+        {% for message in messages %}{{ message }}<br>{% endfor %}
         </div>
-        <p style="margin-top: 10px; color: #666; font-size: 14px;">Click the camera icon to upload a profile picture</p>
-      </div>
+      {% endif %}
+    {% endwith %}
 
-      <form method="POST" action="/profile">
-        <label for="name">Full Name</label>
-        <input id="name" name="name" type="text" value="{{ current_user.name }}" required />
-
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ current_user.email }}" required />
-
-        <label for="phone">Phone Number</label>
-        <input id="phone" name="phone" type="tel" value="{{ current_user.phone }}" required />
-
-        <label for="shop_name">Shop Name</label>
-        <input id="shop_name" name="shop_name" type="text" value="{{ current_user.shop_name or '' }}" />
-
-        <label for="shop_address">Shop Address</label>
-        <textarea id="shop_address" name="shop_address" rows="3">{{ current_user.shop_address or '' }}</textarea>
-
-        <div style="display: flex; justify-content: center; margin-top: 20px;">
-          <button type="submit" name="submit" class="btn btn-green" style="width: 100%; max-width: 200px;">Update Profile</button>
-        </div>
+    <!-- Profile picture -->
+    <div class="profile-pic-wrapper">
+      <div class="progress-circle" id="progressCircle"></div>
+      {% if current_user.profile_pic %}
+        <img id="profilePreview" src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Profile Picture">
+      {% else %}
+        <img id="profilePreview" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9Ijc1IiBjeT0iNzUiIHI9Ijc1IiBmaWxsPSIjZTBlMGUwIi8+Cjx0ZXh0IHg9Ijc1IiB5PSI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY2NiIgZm9udC1zaXplPSI0OCI+👤PC90ZXh0Pgo8L3N2Zz4=" alt="Profile Picture">
+      {% endif %}
+      <form id="profilePicForm" method="POST" action="/upload_profile_pic" enctype="multipart/form-data">
+        <label for="profile_pic">📷</label>
+        <input id="profile_pic" name="profile_pic" type="file" accept="image/*" style="display:none;" onchange="previewAndSubmit(event)">
       </form>
+    </div>
 
-      <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
-
-      <div style="text-align: center;">
-        <h3 style="color: #666; margin-bottom: 15px;">Account Actions</h3>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-          <a href="/logout" class="btn btn-red" style="padding: 8px 16px;">Logout</a>
-        </div>
+    <!-- Profile info form -->
+    <form method="POST" action="/profile" id="profileForm" class="profile-form">
+      <input id="name" name="name" type="text" placeholder="Full Name" value="{{ current_user.name }}" required>
+      <input id="email" name="email" type="email" placeholder="Email" value="{{ current_user.email }}" required>
+      <input id="phone" name="phone" type="tel" placeholder="Phone Number" value="{{ current_user.phone }}" required>
+      <input id="shop_name" name="shop_name" type="text" placeholder="Shop Name" value="{{ current_user.shop_name or '' }}">
+      <textarea id="shop_address" name="shop_address" rows="3" placeholder="Shop Address">{{ current_user.shop_address or '' }}</textarea>
+      <div class="btn-container">
+        <button type="submit" class="btn btn-green">Update Profile</button>
       </div>
+    </form>
+
+    <hr>
+    <h3>Change Password</h3>
+    <form method="POST" action="/change_password" class="profile-form">
+      <input type="password" name="current_password" placeholder="Current Password" required>
+      <input type="password" name="new_password" placeholder="New Password" required>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <div class="btn-container">
+        <button type="submit" class="btn btn-blue">Update Password</button>
+      </div>
+    </form>
+
+    <hr>
+    <div class="btn-container">
+      <a href="/logout" class="btn btn-red">Logout</a>
+      <form method="POST" action="/delete_account" onsubmit="return confirm('Are you sure?');">
+        <button class="btn btn-red" type="submit">Delete Account</button>
+      </form>
+    </div>
+
+    <div class="account-info">
+      <p><strong>User ID:</strong> {{ current_user.id }}</p>
+      <p><strong>Joined:</strong> {{ current_user.created_at }}</p>
     </div>
   </div>
+</div>
+
+<script>
+const sidebar = document.getElementById('sidebar');
+const toggle = document.getElementById('sidebarToggle');
+
+// Sidebar opens only when clicking the toggle button
+toggle.addEventListener('click', ()=>{
+  sidebar.classList.toggle('open');
+});
+
+// Profile picture preview
+function previewAndSubmit(event){
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    document.getElementById('profilePreview').src=e.target.result;
+    document.getElementById('profilePicForm').submit();
+  };
+  reader.readAsDataURL(file);
+}
+
+// Profile completion circular progress
+function updateProgressCircle(){
+  let total=5, filled=0;
+  const fields=['name','email','phone','shop_name','shop_address'];
+  fields.forEach(f=>{ if(document.getElementById(f).value.trim()!=='') filled++; });
+  const percent=Math.round((filled/total)*100);
+  const circle=document.getElementById('progressCircle');
+  circle.style.background=`conic-gradient(#00d4ff 0% ${percent}%, #e0e0e0 ${percent}% 100%)`;
+}
+document.getElementById('profileForm').addEventListener('input',updateProgressCircle);
+window.addEventListener('load',updateProgressCircle);
+</script>
+
 </body>
 </html>
