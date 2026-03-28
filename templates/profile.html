@@ -47,6 +47,8 @@ body {
   padding:0; /* remove padding when hidden */
   transition: width 0.4s ease, padding 0.4s ease;
   z-index:1000;
+  display:flex;
+  flex-direction:column;
 }
 
 /* Sidebar open state */
@@ -63,16 +65,39 @@ body {
   padding:12px 16px; border-radius:14px; transition:0.25s;
 }
 .sidebar a:hover { background: rgba(0,212,255,0.2); transform:translateX(4px); }
+
+/* Updated stats card styling */
 .stats-card {
-  background: rgba(0,212,255,0.1);
-  padding:16px;
-  border-radius:18px;
+  background: #ffffff;
+  border-radius:16px;
+  padding:14px;
   text-align:center;
-  font-size:13px; font-weight:500;
-  box-shadow:0 6px 22px rgba(0,0,0,0.08);
-  transition:0.25s;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  transition:0.25s ease;
+  border:1px solid #eef2f7;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
 }
-.stats-card:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,0.12); }
+
+/* Value (big number) */
+.stats-value {
+  font-size:20px;
+  font-weight:700;
+  color:#00bcd4;
+}
+
+/* Label */
+.stats-label {
+  font-size:12px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* Hover effect */
+.stats-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(0,0,0,0.12);
+}
 
 /* Main content */
 .main { flex:1; display:flex; justify-content:center; align-items:flex-start; padding:35px; transition:margin-left 0.4s ease; }
@@ -162,9 +187,21 @@ h1,h3 { margin:0 0 28px 0; color:#00d4ff; text-align:center; }
   <h2>Dashboard</h2>
   <a href="/"><span>🧮</span> Calculator</a>
   <a href="/logout" style="color:#dc3545;"><span>🚪</span> Logout</a>
-  <div class="stats-card">Calculations: {{ current_user.total_calculations or 0 }}</div>
-  <div class="stats-card">Last Login: {{ current_user.last_login or 'N/A' }}</div>
-  <div class="stats-card">Profile Completion: {{ profile_completion }}%</div>
+
+  <div class="stats-card">
+    <div class="stats-value" id="calcCount">{{ current_user.total_calculations or 0 }}</div>
+    <div class="stats-label">Calculations</div>
+  </div>
+
+  <div class="stats-card">
+    <div class="stats-value" id="lastLogin">{{ current_user.last_login or 'N/A' }}</div>
+    <div class="stats-label">Last Login</div>
+  </div>
+
+  <div class="stats-card">
+    <div class="stats-value" id="profilePercent">{{ profile_completion }}%</div>
+    <div class="stats-label">Profile Completion</div>
+  </div>
 </div>
 
 <!-- Main content -->
@@ -242,10 +279,41 @@ function previewAndSubmit(event){
   const reader=new FileReader();
   reader.onload=function(e){
     document.getElementById('profilePreview').src=e.target.result;
-    document.getElementById('profilePicForm').submit();
+    document.getElementById('profileForm').submit();
   };
   reader.readAsDataURL(file);
 }
+
+// Animate numbers (count up effect)
+function animateValue(id, start, end, duration) {
+  let obj = document.getElementById(id);
+  if (!obj) return;
+
+  let range = end - start;
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    let progress = Math.min((timestamp - startTime) / duration, 1);
+    obj.innerText = Math.floor(progress * range + start);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      obj.innerText = end;
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+// Run animation on load
+window.addEventListener('load', () => {
+  let calc = parseInt(document.getElementById('calcCount')?.innerText) || 0;
+  let percent = parseInt(document.getElementById('profilePercent')?.innerText) || 0;
+
+  animateValue('calcCount', 0, calc, 800);
+  animateValue('profilePercent', 0, percent, 800);
+});
 </script>
 
 </body>
