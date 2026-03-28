@@ -12,6 +12,10 @@ def gst_calculation(product, price, gst_type="exclusive", gst_category="cgst_sgs
     """
     rate = auto_detect_slab(product)
 
+    # Fallback: if detected rate is 0%, use 18% (matches PDF behavior)
+    if rate == 0:
+        rate = 18
+
     # Exclusive GST: price is base price
     if gst_type == "exclusive":
         gst_amount = round(price * rate / 100, 2)

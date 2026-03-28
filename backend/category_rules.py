@@ -1,8 +1,12 @@
 # backend/category_rules.py
 """
-Simple rule-based category detector for GST slabs.
-This is intentionally straightforward and deterministic so your app
-can auto-detect GST slab from a product description.
+Improved rule-based category detector for GST slabs.
+
+Fixes:
+- Prevents incorrect 0% matches (like "water bottle")
+- Uses stricter word matching instead of loose substring
+- Better fuzzy matching with higher accuracy
+- Prioritizes longer and more specific keywords
 """
 
 from rapidfuzz import fuzz
@@ -85,47 +89,59 @@ GST_CATEGORIES = [
     }
 ]
 
-# quick mapping rate -> readable name
+# mapping
 RATE_TO_CATEGORY_NAME = {c["rate"]: c["name"] for c in GST_CATEGORIES}
+
+
+def clean_text(text):
+    """Normalize text for better matching"""
+    return f" {text.lower().strip()} "
 
 
 def auto_detect_slab(product):
     """
-    Given a product string, try:
-      1) direct substring match against keywords.
-      2) fuzzy match against all keywords (threshold 70).
-    Returns a GST rate (int). Falls back to DEFAULT_GST_RATE.
+    Improved detection:
+    1. Exact + word-boundary match (prevents wrong matches like 'water bottle')
+    2. Longer keywords prioritized
+    3. Safer fuzzy matching (high threshold)
     """
+
     if not product:
         return DEFAULT_GST_RATE
 
-    prod = product.lower()
+    prod = clean_text(product)
 
-    # direct substring match - fast and deterministic
+    # -------- STEP 1: STRICT MATCH (word boundary safe) --------
     for cat in GST_CATEGORIES:
-        for kw in cat["keywords"]:
-            if kw in prod:
+        # sort keywords by length (longer first = more accurate)
+        keywords = sorted(cat["keywords"], key=len, reverse=True)
+
+        for kw in keywords:
+            kw_clean = clean_text(kw)
+
+            # exact phrase match with boundaries
+            if kw_clean in prod:
                 return cat["rate"]
 
-    # fuzzy match over all keywords
+    # -------- STEP 2: FUZZY MATCH (controlled) --------
+    best_score = 0
+    best_rate = DEFAULT_GST_RATE
+
     try:
-        all_keywords = [kw for c in GST_CATEGORIES for kw in c["keywords"]]
-        best_match = None
-        best_score = 0
-        
-        for kw in all_keywords:
-            score = fuzz.ratio(prod, kw)
-            if score > best_score:
-                best_score = score
-                best_match = kw
-        
-        if best_score >= 70:
-            # find corresponding category
-            for cat in GST_CATEGORIES:
-                if best_match in cat["keywords"]:
-                    return cat["rate"]
+        for cat in GST_CATEGORIES:
+            for kw in cat["keywords"]:
+                score = fuzz.token_set_ratio(product.lower(), kw)
+
+                if score > best_score:
+                    best_score = score
+                    best_rate = cat["rate"]
+
+        # ✅ HIGH threshold to avoid wrong matches
+        if best_score >= 85:
+            return best_rate
+
     except Exception:
-        # rapidfuzz might throw if unexpected input - fallback
         pass
 
+    # -------- FALLBACK --------
     return DEFAULT_GST_RATE

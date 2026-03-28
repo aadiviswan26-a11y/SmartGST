@@ -25,6 +25,7 @@ try:
     from flask_wtf import FlaskForm
     from wtforms import StringField, PasswordField, SubmitField, validators
     from werkzeug.security import generate_password_hash, check_password_hash
+    from backend.category_rules import auto_detect_slab
 except ImportError as e:
     print(f"Error: Flask import failed. Please install Flask: pip install flask")
     raise

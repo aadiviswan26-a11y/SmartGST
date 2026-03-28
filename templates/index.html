@@ -504,8 +504,20 @@ invoiceBtn.addEventListener('click', async () => {
 
 /* ===== Clear ===== */
 clearBtn.addEventListener('click', () => {
-  productInput.value = ''; priceInput.value = ''; billedInput.value = '';
-  transcript.textContent = ''; window.smartGST.lastFinal = null; window.smartGST.lastCalcResponse = null;
+  // Clear all product inputs
+  document.querySelectorAll('.product-input').forEach(input => input.value = '');
+  // Clear all quantity inputs (reset to 1)
+  document.querySelectorAll('.quantity-input').forEach(input => input.value = '1');
+  // Clear all price inputs
+  document.querySelectorAll('.price-input').forEach(input => input.value = '');
+  // Clear billed input
+  billedInput.value = '';
+  // Clear transcript and reset state
+  transcript.textContent = '';
+  window.smartGST.lastFinal = null;
+  window.smartGST.lastCalcResponse = null;
+  window.smartGST.items = [];
+  // Reset result box
   resultBox.innerHTML = `<p><strong>GST Rate:</strong> —</p><p><strong>GST Amount:</strong> —</p><p><strong>Total:</strong> —</p><p><strong>Category:</strong> —</p>`;
 });
 
