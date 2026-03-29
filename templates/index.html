@@ -26,9 +26,15 @@
   color:#ffffff;
   overflow-x:hidden;
 
-  background: radial-gradient(circle at 20% 30%, #1a2a6c, transparent 40%),
-              radial-gradient(circle at 80% 70%, #b21f1f, transparent 40%),
-              linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+  animation: gradientShift 10s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 body::before{
@@ -69,12 +75,12 @@ body::after{
   
     .wrap{max-width:980px;margin:28px auto;padding:20px;}
     .card{
-  background: rgba(255,255,255,0.05);
+  background: #ffffff;
   backdrop-filter: blur(18px);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   padding:22px;
-  color:#fff;
+  color:#111;
   border: 1px solid rgba(255,255,255,0.1);
 }
     .flex-between{display:flex;justify-content:space-between;align-items:center}
